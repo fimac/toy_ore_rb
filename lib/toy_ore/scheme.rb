@@ -39,6 +39,20 @@ module ToyOre
       end
     end
 
+    # Compares the left part of a ciphertext with the right part of a ciphertext,
+    # created by the same ore client. eg ToyOre::OreScheme.new()
+    #
+    # @param left_ciphertext [Object]
+    #
+    # @param right_ciphertext [Object]
+    #
+    #
+    # @ return [Integer] The comparison result
+    # -1 if the left ciphertext is less than the right ciphertext
+    #
+    # 0 if the left ciphertext is equal to the right ciphertext
+    #
+    # 1 if the left ciphertext is greater than the right ciphertext
     def self.compare_ciphertexts(left_ciphertext, right_ciphertext)
       (right_ciphertext[:iv] ^ left_ciphertext[:key]) ^ right_ciphertext[:encryptions][left_ciphertext[:offset]]
     end
