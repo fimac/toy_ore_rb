@@ -36,7 +36,11 @@ module ToyOre
         return 0
       else
         return 1
+      end
+    end
+
+    def self.compare_ciphertexts(left_ciphertext, right_ciphertext)
+      (right_ciphertext[:iv] ^ left_ciphertext[:key]) ^ right_ciphertext[:encryptions][left_ciphertext[:offset]]
     end
   end
-end
 end
