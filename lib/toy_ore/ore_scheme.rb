@@ -3,15 +3,15 @@ require "toy_ore/scheme"
 module ToyOre
   class OreScheme
     def initialize
-      @keys = (1..255).to_a.shuffle()
-      @prp = (1..255).to_a.shuffle()
+      @keys = (0..255).to_a.shuffle()
+      @prp = (0..255).to_a.shuffle()
     end
 
     def encrypt(plaintext)
-      iv = rand(0..900)
+      iv = rand(1..900)
       # This represents all the values in the domain.
       # e.g A domain could be all the salaries in a employee table.
-      domain = (1..255).to_a
+      domain = (0..255).to_a
 
       # Array to hold the encrypted value of the cmp result for each value in the domain.
       encryptions = []

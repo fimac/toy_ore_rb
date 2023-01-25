@@ -1,7 +1,3 @@
-require "toy_ore/scheme"
-require "toy_ore/ore_scheme"
-
-
 RSpec.describe ToyOre::Scheme do
   describe "compare_plaintexts" do
     it "returns -1 if a < b" do
@@ -21,5 +17,24 @@ RSpec.describe ToyOre::Scheme do
   end
 end
 
-RSpec.describe ToyOre::Scheme::OreScheme do
+RSpec.describe ToyOre::OreScheme do
+  describe "comparing encrypted values" do
+    it "left ciphertexts are deterministic" do
+      ore = ToyOre::OreScheme.new()
+      ct_one = ore.encrypt(42)
+
+      ct_two = ore.encrypt(42)
+
+      expect(ct_one[:left][:key]).to eq(ct_two[:left][:key])
+    end
+
+    it "right ciphertexts are non deterministic" do
+      ore = ToyOre::OreScheme.new()
+
+      ct_one = ore.encrypt(42)
+      ct_two = ore.encrypt(42)
+
+      expect(ct_one[:right][:encryptions]).not_to eq(ct_two[:right][:encryptions])
+    end
+  end
 end

@@ -11,4 +11,7 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
 
   s.add_development_dependency "rspec", "~> 3.0"
+  s.add_development_dependency 'pry'
+  s.add_development_dependency "debug", ">= 1.0.0"
+  s.add_development_dependency "pry-byebug"
 end
