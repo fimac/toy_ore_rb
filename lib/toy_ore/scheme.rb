@@ -17,6 +17,7 @@ module ToyOre
     # @return [Integer]
     def self.encrypt(iv, key, cmp_result)
       (iv ^ key) ^ cmp_result
+      binding.pry
     end
 
     # Compares 2 plaintexts and returns a cmp_result.
@@ -53,8 +54,27 @@ module ToyOre
     # 0 if the left ciphertext is equal to the right ciphertext
     #
     # 1 if the left ciphertext is greater than the right ciphertext
+    #
+    # To get the comparison result:
+    # We need the iv from the right ciphertext.
+    # The key from the left ciphertext.
+    # The value at the index of the offset from the left ciphertext, in the right ciphertext's encryption array.
+    # When we Xor the iv and key, with the encrypted value we get the comparison result
+
+    # eg
+    # [1] pry(ToyOre::Scheme)> iv
+    # => 416
+    # [2] pry(ToyOre::Scheme)> key
+    # => 208
+    # [3] pry(ToyOre::Scheme)> iv ^ key
+    # => 368
+    # [4] pry(ToyOre::Scheme)> (iv ^ key) ^ cmp_result
+    # => -369
+    # [5] pry(ToyOre::Scheme)> (iv ^ key) ^ -369
+    # => -1
     def self.compare_ciphertexts(left_ciphertext, right_ciphertext)
       (right_ciphertext[:iv] ^ left_ciphertext[:key]) ^ right_ciphertext[:encryptions][left_ciphertext[:offset]]
+      binding.pry
     end
   end
 end
