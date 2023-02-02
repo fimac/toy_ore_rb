@@ -83,6 +83,10 @@ module ToyOre
         @offset = offset
         @key = key
       end
+
+      def <=>(right_ciphertext)
+        ToyOre::Scheme.compare_ciphertexts(self, right_ciphertext)
+      end
     end
 
     class RightCiphertext
@@ -91,6 +95,10 @@ module ToyOre
       def initialize(iv, encryptions)
         @iv = iv
         @encryptions = encryptions
+      end
+
+      def <=>(left_ciphertext)
+        ToyOre::Scheme.compare_ciphertexts(left_ciphertext, self)
       end
     end
 

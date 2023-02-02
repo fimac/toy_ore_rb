@@ -44,7 +44,8 @@ RSpec.describe ToyOre::Scheme do
       ct_one = ore_client.encrypt(42)
       ct_two = ore_client.encrypt(43)
 
-      result = ToyOre::Scheme.compare_ciphertexts(ct_one.left, ct_two.right)
+      # result = ToyOre::Scheme.compare_ciphertexts(ct_one.left, ct_two.right)
+      result = ct_one.left.<=>(ct_two.right)
       expect(result).to eq(-1)
     end
 
@@ -53,7 +54,7 @@ RSpec.describe ToyOre::Scheme do
       ct_one = ore_client.encrypt(42)
       ct_two = ore_client.encrypt(42)
 
-      result = ToyOre::Scheme.compare_ciphertexts(ct_one.left, ct_two.right)
+      result = ct_one.left.<=>(ct_two.right)
       expect(result).to eq(0)
     end
 
@@ -62,7 +63,7 @@ RSpec.describe ToyOre::Scheme do
       ct_one = ore_client.encrypt(43)
       ct_two = ore_client.encrypt(42)
 
-      result = ToyOre::Scheme.compare_ciphertexts(ct_one.left, ct_two.right)
+      result = ct_one.left.<=>(ct_two.right)
       expect(result).to eq(1)
     end
   end
