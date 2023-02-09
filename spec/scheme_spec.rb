@@ -1,7 +1,7 @@
 RSpec.describe ToyOre::Scheme::OreScheme do
   describe "OreScheme initialization" do
     it "left ciphertexts are deterministic" do
-      ore =ToyOre::Scheme::OreScheme.new()
+      ore = ToyOre::Scheme::OreScheme.new()
       ct_one = ore.encrypt(42)
 
       ct_two = ore.encrypt(42)
@@ -10,7 +10,7 @@ RSpec.describe ToyOre::Scheme::OreScheme do
     end
 
     it "right ciphertexts are non deterministic" do
-      ore =ToyOre::Scheme::OreScheme.new()
+      ore = ToyOre::Scheme::OreScheme.new()
 
       ct_one = ore.encrypt(42)
       ct_two = ore.encrypt(42)
@@ -40,17 +40,16 @@ RSpec.describe ToyOre::Scheme do
 
   describe "compare_ciphertexts" do
     it "returns -1 if left_ct < right_ct" do
-      ore_client =ToyOre::Scheme::OreScheme.new()
+      ore_client = ToyOre::Scheme::OreScheme.new()
       ct_one = ore_client.encrypt(42)
       ct_two = ore_client.encrypt(43)
 
-      # result = ToyOre::Scheme.compare_ciphertexts(ct_one.left, ct_two.right)
       result = ct_one.left.<=>(ct_two.right)
       expect(result).to eq(-1)
     end
 
     it "returns 0 if left_ct == right_ct" do
-      ore_client =ToyOre::Scheme::OreScheme.new()
+      ore_client = ToyOre::Scheme::OreScheme.new()
       ct_one = ore_client.encrypt(42)
       ct_two = ore_client.encrypt(42)
 
@@ -59,13 +58,30 @@ RSpec.describe ToyOre::Scheme do
     end
 
     it "returns 1 if left_ct > right_ct" do
-      ore_client =ToyOre::Scheme::OreScheme.new()
-      ct_one = ore_client.encrypt(43)
+      ore_client = ToyOre::Scheme::OreScheme.new()
+      ct_one = ore_client.encrypt(112)
       ct_two = ore_client.encrypt(42)
 
       result = ct_one.left.<=>(ct_two.right)
       expect(result).to eq(1)
     end
+
+    it "returns -1 if left_ct < right_ct" do
+      ore_client = ToyOre::Scheme::OreScheme.new()
+      ct_one = ore_client.encrypt(42)
+      ct_two = ore_client.encrypt(43)
+
+      result = ct_one.left.<=>(ct_two.right)
+      expect(result).to eq(-1)
+    end
+
+    it "returns -1 if left_ct < right_ct" do
+      ore_client = ToyOre::Scheme::OreScheme.new(0..3)
+      ct_one = ore_client.encrypt(1)
+      ct_two = ore_client.encrypt(3)
+
+      result = ct_one.left.<=>(ct_two.right)
+      expect(result).to eq(-1)
+    end
   end
 end
-

@@ -112,27 +112,81 @@ module ToyOre
     end
 
     class OreScheme
-      def initialize
+      def initialize(domain_size = 0..255)
         # Highlight that these are secrets.
         # PRF key
-        @keys = (0..255).to_a.shuffle()
+        @domain_size = domain_size
+
+        @keys = (domain_size).to_a.shuffle() # [4, 2, 3, 0, 1, 5]
         # PRP key
-        @prp = (0..255).to_a.shuffle()
+        @prp = (domain_size).to_a.shuffle() # [0, 3, 2, 1, 5, 4]
       end
 
-      def encrypt(plaintext)
-        iv = rand(0..255)
-        # This represents all the values in the domain.
+      # Left CT is storing offset at @prp[pt] = 3
+      # Which is the same value where the encryption of the pt as compared to the domain are the same value.
 
+      # When comparing the left ct to it's own right ct, the offset from the left ct is the index in the right ct where the cmp result is 0.
+
+      # When compared to any other right ct, the offset in the right ct, will be the cmp result of the left pt value and whatever the pt value was of the right ct.
+
+      # plaintext = 1
+
+      # At index 0, encryption of 1 <=> 0
+      # [-7]
+
+      # At index 3, encryption of 1 <=> 1
+      # [-7, nil, nil, 2]
+
+      # At index 2, encryption of 1 <=> 2
+      # [-7, nil, 0, 2]
+
+      # At index 1, encryption of 1 <=> 3
+      # [-7, 1, 0, 2]
+
+      # At index 5, encryption of 1 <=> 4
+      # [-7, 1, 0, 2, nil, 6]
+
+      # At index 4, encryption of 1 <=> 5
+      # [-7, 1, 0, 2, 2, 6]
+
+      # ct left @key=0, @offset=3> right @encryptions=[-7, 1, 0, 2, 2, 6], @iv=2>
+
+      # plaintext = 4
+
+      # At index 0, encryption of 4 <=> 0
+      # [-5]
+
+      # At index 3, encryption of 4 <=> 1
+      # [-5, nil, nil, -1]
+
+      # At index 2, encryption of 4 <=> 2
+      # [-5, nil, -4, -1]
+
+      # At index 1, encryption of 4 <=> 3
+      # [-5, -3, -4, -1]
+
+      # At index 5, encryption of 4 <=> 4
+      # [-5, -3, -4, -1, nil, 5]
+
+      # At index 4, encryption of 4 <=> 5
+      # [-5, -3, -4, -1, 0, 5]
+
+      # ct left @key=5, @offset=5> right @encryptions=[-5, -3, -4, -1, 0, 5], @iv=0>
+
+      def encrypt(plaintext)
+        iv = rand(@domain_size)
+
+        # This represents all the values in the domain.
         # This is a small domain example.
         # This is 1 block, 1 byte, 8 bits, total value is 256.
-        domain = (0..255).to_a
+        domain = (@domain_size).to_a
 
         # Array to hold the encrypted value of the cmp result for each value in the domain.
         encryptions = []
 
         domain.each do |d|
-          # The offset is what ever index d (the plaintext) is in the shuffled PRP array.
+          # binding.pry
+          # The offset is what ever index d (domain value) is in the shuffled PRP array.
           # If we used the plaintext value as the offset, this would give away the value of the plaintext.
           # Using the PRP, swaps the plaintext value for a random number in the PRP to store the encrypted
           # comparison result in the right ciphertext encryptions array.
@@ -179,15 +233,29 @@ module ToyOre
   end
 end
 
+# ore = ToyOre::Scheme::OreScheme.new()
 
-# TODO make ciphertext a class.
-# make left a class and right a class
-# on the left ciphertext implement the comparison
+# keith = {
+#   id: "Keith",
+#   age: ore.encrypt(79)
+# }
 
-# class LeftCiphertext
-#   def <=>(right_ciphertext)
-#     ToyOre::Scheme.compare_ciphertexts(self, right_ciphertext
+# liam = {
+#   id: "Liam",
+#   age: ore.encrypt(50)
+# }
 
-#     )
-#   end
-# end
+# ronnie = {
+#   id: "Ronnie",
+#   age: ore.encrypt(75)
+# }
+
+# harry = {
+#   id: "Harry",
+#   age: ore.encrypt(29)
+# }
+
+# sorted_array = array.sort { |a, b| a[:age].left.<=>(b[:age].right) }
+# sorted_array.map { |a| a[:id] }
+
+# array.sort { |a, b| a[:age].left.<=>(b[:age].right) }.map { |a| a[:id] }
