@@ -21,9 +21,9 @@ module ToyOre
     end
 
     # Compares 2 plaintexts and returns a cmp_result.
-    # If a < b -1
-    # If a == b 0
-    # if a > b 1
+    # If a < b = -1
+    # If a == b = 0
+    # if a > b = 1
     #
     # @param a [Integer] A plaintext integer value
     #
@@ -73,6 +73,7 @@ module ToyOre
     # [5] pry(ToyOre::Scheme)> (iv ^ key) ^ -369
     # => -1
     def self.compare_ciphertexts(left_ciphertext, right_ciphertext)
+      # binding.pry
       (right_ciphertext.iv ^ left_ciphertext.key) ^ right_ciphertext.encryptions[left_ciphertext.offset]
     end
 
@@ -113,13 +114,12 @@ module ToyOre
 
     class OreScheme
       def initialize(domain_size = 0..255)
-        # Highlight that these are secrets.
-        # PRF key
         @domain_size = domain_size
 
-        @keys = (domain_size).to_a.shuffle() # [4, 2, 3, 0, 1, 5]
+        # PRF key
+        @prf = (domain_size).to_a.shuffle()
         # PRP key
-        @prp = (domain_size).to_a.shuffle() # [0, 3, 2, 1, 5, 4]
+        @prp = (domain_size).to_a.shuffle()
       end
 
       # Left CT is storing offset at @prp[pt] = 3
@@ -128,50 +128,6 @@ module ToyOre
       # When comparing the left ct to it's own right ct, the offset from the left ct is the index in the right ct where the cmp result is 0.
 
       # When compared to any other right ct, the offset in the right ct, will be the cmp result of the left pt value and whatever the pt value was of the right ct.
-
-      # plaintext = 1
-
-      # At index 0, encryption of 1 <=> 0
-      # [-7]
-
-      # At index 3, encryption of 1 <=> 1
-      # [-7, nil, nil, 2]
-
-      # At index 2, encryption of 1 <=> 2
-      # [-7, nil, 0, 2]
-
-      # At index 1, encryption of 1 <=> 3
-      # [-7, 1, 0, 2]
-
-      # At index 5, encryption of 1 <=> 4
-      # [-7, 1, 0, 2, nil, 6]
-
-      # At index 4, encryption of 1 <=> 5
-      # [-7, 1, 0, 2, 2, 6]
-
-      # ct left @key=0, @offset=3> right @encryptions=[-7, 1, 0, 2, 2, 6], @iv=2>
-
-      # plaintext = 4
-
-      # At index 0, encryption of 4 <=> 0
-      # [-5]
-
-      # At index 3, encryption of 4 <=> 1
-      # [-5, nil, nil, -1]
-
-      # At index 2, encryption of 4 <=> 2
-      # [-5, nil, -4, -1]
-
-      # At index 1, encryption of 4 <=> 3
-      # [-5, -3, -4, -1]
-
-      # At index 5, encryption of 4 <=> 4
-      # [-5, -3, -4, -1, nil, 5]
-
-      # At index 4, encryption of 4 <=> 5
-      # [-5, -3, -4, -1, 0, 5]
-
-      # ct left @key=5, @offset=5> right @encryptions=[-5, -3, -4, -1, 0, 5], @iv=0>
 
       def encrypt(plaintext)
         iv = rand(@domain_size)
@@ -185,7 +141,6 @@ module ToyOre
         encryptions = []
 
         domain.each do |d|
-          # binding.pry
           # The offset is what ever index d (domain value) is in the shuffled PRP array.
           # If we used the plaintext value as the offset, this would give away the value of the plaintext.
           # Using the PRP, swaps the plaintext value for a random number in the PRP to store the encrypted
@@ -208,7 +163,7 @@ module ToyOre
           # random shuffled key array.
           #
           #
-          encryptions[offset] = ToyOre::Scheme.encrypt(iv, @keys[offset], cmp_result)
+          encryptions[offset] = ToyOre::Scheme.encrypt(iv, @prf[offset], cmp_result)
         end
 
         # The left ciphertext:
@@ -218,44 +173,17 @@ module ToyOre
         #     The offset is the index of the encrypted comparison result,
         #     in the encryptions array.
         #
-        # 2.  Stores the key that was used to encrypt the comparison result.
+        # 2.  Stores the key that was used to encrypt the comparison result
+        #     at the offset in the right ciphertext.
         #
         # The right ciphertext:
-        # Persisted
         #
         # 1.  Stores the IV used in the encryption
         # 2.  Stores an array of all encrypted comparison results.
         #
         #
-        OreCiphertext.new(@prp[plaintext], @keys[@prp[plaintext]], iv, encryptions)
+        OreCiphertext.new(@prp[plaintext], @prf[@prp[plaintext]], iv, encryptions)
       end
     end
   end
 end
-
-# ore = ToyOre::Scheme::OreScheme.new()
-
-# keith = {
-#   id: "Keith",
-#   age: ore.encrypt(79)
-# }
-
-# liam = {
-#   id: "Liam",
-#   age: ore.encrypt(50)
-# }
-
-# ronnie = {
-#   id: "Ronnie",
-#   age: ore.encrypt(75)
-# }
-
-# harry = {
-#   id: "Harry",
-#   age: ore.encrypt(29)
-# }
-
-# sorted_array = array.sort { |a, b| a[:age].left.<=>(b[:age].right) }
-# sorted_array.map { |a| a[:id] }
-
-# array.sort { |a, b| a[:age].left.<=>(b[:age].right) }.map { |a| a[:id] }
