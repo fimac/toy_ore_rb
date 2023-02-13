@@ -1,8 +1,8 @@
 Gem::Specification.new do |s|
   s.name = "toy-ore"
-  s.version = "0.4.0"
+  s.version = "0.5.0"
   s.summary = "toy-ore"
-  s.description = "A toy library to get an understanding of how ore encryption works. This is an unsafe implementation, only to be used for educational purposes. DO NOT USE IN PRODUCTION."
+  s.description = "A toy library to get an understanding of how order revealing encryption works. This is an unsafe implementation, only to be used for educational purposes. DO NOT USE IN PRODUCTION."
   s.authors = ["Fiona McCawley"]
   s.email = "fimccawley@gmail.com"
   s.files = ["lib/toy_ore.rb", "lib/toy_ore/scheme.rb"]
