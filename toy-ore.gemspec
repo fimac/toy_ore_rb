@@ -14,6 +14,9 @@ Gem::Specification.new do |s|
   s.metadata["allowed_push_host"] = "https://rubygems.org"
   s.metadata["source_code_uri"] = "https://github.com/fimac/toy_ore_rb"
   s.metadata["documentation_uri"] = "https://rubydoc.info/gems/toy-ore"
+  s.rdoc_options = ["--main", "README.rdoc",
+                    "--title", "Ruby Toy ORE Library: Educational tool to learn about Order Revealing Encryption"]
+  s.extra_rdoc_files = `git ls-files -z *.rdoc lib/*.rb lib/*/*.rb ext/*.c ext/*.h`.split("\x0")
 
   s.add_development_dependency "rspec", "~> 3.0"
   s.add_development_dependency "pry"

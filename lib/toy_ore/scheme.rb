@@ -17,7 +17,6 @@ module ToyOre
     # @return [Integer]
     def self.encrypt(iv, key, cmp_result)
       (iv ^ key) ^ cmp_result
-      # binding.pry
     end
 
     # Compares 2 plaintexts and returns a cmp_result.
@@ -49,6 +48,7 @@ module ToyOre
     #
     #
     # @ return [Integer] The comparison result
+    #
     # -1 if the left ciphertext is less than the right ciphertext
     #
     # 0 if the left ciphertext is equal to the right ciphertext
@@ -73,7 +73,6 @@ module ToyOre
     # [5] pry(ToyOre::Scheme)> (iv ^ key) ^ -369
     # => -1
     def self.compare_ciphertexts(left_ciphertext, right_ciphertext)
-      # binding.pry
       (right_ciphertext.iv ^ left_ciphertext.key) ^ right_ciphertext.encryptions[left_ciphertext.offset]
     end
 
@@ -122,13 +121,6 @@ module ToyOre
         @prp = (domain_size).to_a.shuffle()
       end
 
-      # Left CT is storing offset at @prp[pt] = 3
-      # Which is the same value where the encryption of the pt as compared to the domain are the same value.
-
-      # When comparing the left ct to it's own right ct, the offset from the left ct is the index in the right ct where the cmp result is 0.
-
-      # When compared to any other right ct, the offset in the right ct, will be the cmp result of the left pt value and whatever the pt value was of the right ct.
-
       def encrypt(plaintext)
         iv = rand(@domain_size)
 
@@ -167,9 +159,8 @@ module ToyOre
         end
 
         # The left ciphertext:
-        # Query ciphertext
         # 1.  Stores the value of the offset.
-
+        #
         #     The offset is the index of the encrypted comparison result,
         #     in the encryptions array.
         #
