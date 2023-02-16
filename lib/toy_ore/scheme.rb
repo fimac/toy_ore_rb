@@ -178,3 +178,30 @@ module ToyOre
     end
   end
 end
+
+# Examples
+
+# Initialize our tiny ORE Scheme
+# ore_client = ToyOre::Scheme::OreScheme.new(0..3)
+
+# Create ore ciphertext's for all values
+# ct_a = ore_client.encrypt(0)
+# ct_b = ore_client.encrypt(1)
+# ct_c = ore_client.encrypt(2)
+# ct_d = ore_client.encrypt(3)
+
+# Store ct's in objects
+# a = { letter: "a", ore: ct_a }
+# b = { letter: "b", ore: ct_b }
+# c = { letter: "c", ore: ct_c }
+# d = { letter: "d", ore: ct_d }
+
+# Compare ct's
+# a[:ore].left.<=>(d[:ore].right)
+# d[:ore].left.<=>(b[:ore].right)
+
+# Create an unordered array
+# unordered_array = [d, c, a, b]
+
+# Order array using only ore ct's
+# ordered_array = unordered_array.sort { |x, y| x[:ore].left.<=>(y[:ore].right) }.map { |a| a[:letter] }
