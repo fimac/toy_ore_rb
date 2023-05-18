@@ -115,7 +115,7 @@ module ToyOre
       def initialize(domain_size = 0..255)
         @domain_size = domain_size
 
-        # PRF key
+        # PRF key - hash key
         @prf = (domain_size).to_a.shuffle()
         # PRP key
         @prp = (domain_size).to_a.shuffle()
@@ -171,6 +171,7 @@ module ToyOre
         #
         # 1.  Stores the IV used in the encryption
         # 2.  Stores an array of all encrypted comparison results.
+        #
         #
         #
         OreCiphertext.new(@prp[plaintext], @prf[@prp[plaintext]], iv, encryptions)
