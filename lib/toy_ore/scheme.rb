@@ -115,7 +115,7 @@ module ToyOre
       def initialize(domain_size = 0..255)
         @domain_size = domain_size
 
-        # PRF key - hash key
+        # PRF key
         @prf = (domain_size).to_a.shuffle()
         # PRP key
         @prp = (domain_size).to_a.shuffle()
