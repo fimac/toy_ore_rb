@@ -1,0 +1,37 @@
+name: "Build gem"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash -l {0}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+      - name: Install dependencies
+        run: gem install bundler
+      - run: bundle install
+      - name: Run Specs
+        run: bundle exec rspec
+      - name: Build Gem
+        run: gem build toy-ore.gemspec
+      - name: Upload Gem Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: gem-artifact
+          path: toy-ore-*.gem
