@@ -6,11 +6,16 @@ on:
       - released
   workflow_dispatch: {}
 jobs:
-  test:
-    name: "testing release flow"
+  build-and-test-ruby-gems:
+    uses: fimac/toy_ore_rb/build-gem.yml
+  publish-gem:
+    name: "Publish toy-ore gem"
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - name: "Run bash"
-        shell: bash
-        run: |
-          echo Testing ..............!!!
+       - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
+          shell: bash
+          run: gem push ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
