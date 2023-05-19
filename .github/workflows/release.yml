@@ -5,6 +5,12 @@ on:
     types:
       - released
   workflow_dispatch: {}
-# run specs
-# build gem
-# push gem
+jobs:
+  test:
+    name: "testing release flow"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Run bash"
+        shell: bash
+        run: |
+          echo Testing ..............!!!
