@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "toy-ore"
-  s.version = "0.7.0"
+  s.version = "0.7.1"
   s.summary = "toy-ore"
   s.description = "A toy library to get an understanding of how order revealing encryption works. This is an unsafe implementation, only to be used for educational purposes. DO NOT USE IN PRODUCTION."
   s.authors = ["Fiona McCawley"]
