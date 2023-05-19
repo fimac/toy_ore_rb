@@ -29,9 +29,12 @@ jobs:
       - name: Run Specs
         run: bundle exec rspec
       - name: Build Gem
-        run: gem build toy-ore.gemspec
+        id: build-ruby-gem
+        run: |
+          gem build toy-ore.gemspec
+          echo "::set-output name=GEM_NAME::$(basename toy-ore-*.gem)"
       - name: Upload Gem Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: gem-artifact
+          name: ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
           path: toy-ore-*.gem
