@@ -1,0 +1,10 @@
+name: Release
+
+on:
+  release:
+    types:
+      - released
+  workflow_dispatch: {}
+# run specs
+# build gem
+# push gem
