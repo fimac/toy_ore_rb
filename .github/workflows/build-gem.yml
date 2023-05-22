@@ -9,7 +9,7 @@ on:
   workflow_call:
     outputs:
       gem-name:
-        value: ${{ jobs.build.gem-name-output }}
+        value: ${{ jobs.build.outputs.gem-name-output }}
 
 defaults:
   run:
