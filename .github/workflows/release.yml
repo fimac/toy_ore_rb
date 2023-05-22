@@ -13,7 +13,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-       - name: Download artifact
+      - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
