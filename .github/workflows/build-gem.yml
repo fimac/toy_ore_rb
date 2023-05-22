@@ -7,10 +7,9 @@ on:
     branches:
       - main
   workflow_call:
-    inputs:
+    outputs:
       gem-name:
-        required: true
-        type: string
+        value: ${{ jobs.build.gem-name-output }}
 
 defaults:
   run:
@@ -19,6 +18,8 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      gem-name-output: ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
 
     steps:
       - name: Checkout code
