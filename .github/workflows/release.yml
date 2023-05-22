@@ -10,6 +10,7 @@ jobs:
     uses: ./.github/workflows/build-gem.yml
   publish-gem:
     name: "Publish toy-ore gem"
+    needs: [build-and-test-ruby-gems]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
