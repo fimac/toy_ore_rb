@@ -28,9 +28,9 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
+          name: ${{ inputs.gem-name }}
       - name: Publish gem
         run: |
           echo ".....pushing gem"
-          echo ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
-          gem push ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
+          echo ${{ inputs.gem-name }}
+          gem push ${{ inputs.gem-name }}
