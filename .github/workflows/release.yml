@@ -13,6 +13,8 @@ defaults:
 jobs:
   build-and-test-ruby-gems:
     uses: ./.github/workflows/build-gem.yml
+    outputs:
+        gem-name: ${{ steps.build.outputs.GEM_NAME }}
   publish-gem:
     name: "Publish toy-ore gem"
     needs: [build-and-test-ruby-gems]
@@ -28,9 +30,9 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.gem-name }}
+          name: ${{ needs.build-and-test-ruby-gems.outputs.gem-name }}
       - name: Publish gem
         run: |
           echo ".....pushing gem"
-          echo ${{ inputs.gem-name }}
-          gem push ${{ inputs.gem-name }}
+          echo ${{ needs.build-and-test-ruby-gems.outputs.gem-name }}
+          gem push ${{ needs.build-and-test-ruby-gems.outputs.gem-name }}
