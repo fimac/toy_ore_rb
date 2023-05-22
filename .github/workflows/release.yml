@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 jobs:
   build-and-test-ruby-gems:
-    uses: fimac/toy_ore_rb/.github/workflows/build-gem.yml@main
+    uses: ./.github/workflows/build-gem.yml
   publish-gem:
     name: "Publish toy-ore gem"
     needs: [build]
