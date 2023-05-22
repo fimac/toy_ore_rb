@@ -5,16 +5,24 @@ on:
     types:
       - released
   workflow_dispatch: {}
+
+defaults:
+  run:
+    shell: bash -l {0}
+
 jobs:
   build-and-test-ruby-gems:
     uses: ./.github/workflows/build-gem.yml
   publish-gem:
     name: "Publish toy-ore gem"
+    needs: [build-and-test-ruby-gems]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
-          shell: bash
-          run: gem push ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
+          run: |
+            echo ".....pushing gem"
+            echo ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
+            gem push ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
