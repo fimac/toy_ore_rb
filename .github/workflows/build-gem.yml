@@ -6,6 +6,10 @@ on:
   pull_request:
     branches:
       - main
+  workflow_call:
+    inputs:
+      GEM_NAME:
+        required: true
 
 defaults:
   run:
