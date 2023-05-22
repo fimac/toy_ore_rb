@@ -4,7 +4,7 @@ on:
   release:
     types:
       - released
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 defaults:
   run:
@@ -15,9 +15,10 @@ jobs:
     uses: ./.github/workflows/build-gem.yml
   publish-gem:
     name: "Publish toy-ore gem"
-    needs: [build-and-test-ruby-gems]
     runs-on: ubuntu-latest
+    needs: build-and-test-ruby-gems
     steps:
+      - run: echo ${{ needs.build-and-test-ruby-gems.outputs.gem-name }}
       - name: Checkout code
         uses: actions/checkout@v2
 
