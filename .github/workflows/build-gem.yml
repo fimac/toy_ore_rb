@@ -6,7 +6,11 @@ on:
   pull_request:
     branches:
       - main
-  workflow_call: {}
+  workflow_call:
+    inputs:
+      gem-name:
+        required: true
+        type: string
 
 defaults:
   run:
