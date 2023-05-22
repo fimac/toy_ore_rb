@@ -18,11 +18,19 @@ jobs:
     needs: [build-and-test-ruby-gems]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
-          run: |
-            echo ".....pushing gem"
-            echo ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
-            gem push ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
+      - name: Publish gem
+        run: |
+          echo ".....pushing gem"
+          echo ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
+          gem push ${{ steps.build-ruby-gem.outputs.GEM_NAME }}
