@@ -209,3 +209,4 @@ end
 
 # Example of chore label
 #  Example of feature label
+# Example of bug label
