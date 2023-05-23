@@ -206,3 +206,5 @@ end
 
 # Order array using only ore ct's
 # ordered_array = unordered_array.sort { |x, y| x[:ore].left.<=>(y[:ore].right) }.map { |a| a[:letter] }
+
+# Example of chore label
